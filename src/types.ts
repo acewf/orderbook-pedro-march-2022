@@ -9,7 +9,6 @@ export interface OrderBook {
   bids: Array<BookItem>;
   product_id: string;
   levels: number;
-  maxTotal: number;
 }
 
 export interface BooksList {

@@ -12,10 +12,12 @@
     "just-throttle": "^4.0.1",
     "next": "12.1.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-fps": "^1.0.6",
+    "react-fps-stats": "^0.2.3"
   },
   "devDependencies": {
-    "@types/node": "17.0.21",
+    "@types/node": "^17.0.21",
     "@types/react": "17.0.40",
     "autoprefixer": "^10.4.4",
     "eslint": "8.11.0",

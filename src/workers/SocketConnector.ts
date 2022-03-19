@@ -21,9 +21,9 @@ class Socket extends WebSocket {
 
   onMessage(ev: MessageEvent): void {
     messages++;
-    if (messages > 1000) {
+    /* if (messages > 10) {
       this.close()
-    }
+    } */
   }
 
   onError(): void {
