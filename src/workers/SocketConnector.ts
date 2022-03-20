@@ -1,6 +1,5 @@
-import { WsMessage } from '../types';
+import type { WsMessage } from '../types';
 import { CLOSED_CONNECTION, ERROR_CONNECTION } from '../constants';
-let messages = 0
 
 class Socket extends WebSocket {
   initMessage: WsMessage;
@@ -11,19 +10,10 @@ class Socket extends WebSocket {
     this.onopen = this.onOpen.bind(this);
     this.onerror = this.onError.bind(this);
     this.onclose = this.onClose.bind(this);
-
-    this.addEventListener('message', this.onMessage.bind(this));
   }
 
   onOpen(): void {
     this.send(JSON.stringify(this.initMessage));
-  }
-
-  onMessage(ev: MessageEvent): void {
-    messages++;
-    /* if (messages > 10) {
-      this.close()
-    } */
   }
 
   onError(): void {

@@ -1,8 +1,12 @@
 import Socket from './SocketConnector'
-import { BookItem, OrderBook, WsResponse } from '../types';
 import {
-  BOOK_SNAPSHOT, BOOK_DELTA,
-  EMPTY_BOOK, EVENT_SUBSCRIBED,
+  BookItem, OrderBook, WsResponse,
+  WorkerIncomeMessage
+} from '../types';
+import {
+  BOOK_SNAPSHOT, BOOK_ID,
+  EMPTY_BOOK, SUBSCRIBED_EVENT,
+  SUBSCRIBE_EVENT, INFO_EVENT,
   SWAP, START, PAUSE
 } from '../constants'
 import { bookConverter, bookUpdater } from './helper';
@@ -11,11 +15,7 @@ const ctx: Worker = self as unknown as Worker;
 let connection: Socket;
 let bookInstance: OrderBook = EMPTY_BOOK;
 
-function processMessages(data: (WsResponse)): OrderBook {
-  if (!data.feed || data.event === EVENT_SUBSCRIBED) {
-    return bookInstance;
-  }
-
+function processMessages(data: WsResponse): OrderBook {
   let asks: Array<BookItem> = bookInstance.asks || [];
   let bids: Array<BookItem> = bookInstance.bids || [];
 
@@ -25,7 +25,7 @@ function processMessages(data: (WsResponse)): OrderBook {
       bids = bookConverter(data.bids, false);
 
       break;
-    case BOOK_DELTA:
+    case BOOK_ID:
       asks = bookUpdater(asks, data.asks, true)
       bids = bookUpdater(bids, data.bids, false)
       break;
@@ -44,12 +44,16 @@ function processMessages(data: (WsResponse)): OrderBook {
 
 
 function onMessage(ev: MessageEvent): void {
-  const data = JSON.parse(ev.data);
-  if (data.event) {
-    postMessage(data);
-
-    return;
+  const data: WsResponse = JSON.parse(ev.data);
+  switch (data.event) {
+    case INFO_EVENT:
+      postMessage(data);
+      break;
+    case SUBSCRIBED_EVENT:
+      postMessage(bookInstance);
+      break;
   }
+  if (data.event) return;
 
   const precessedBook: OrderBook = processMessages(data);
   bookInstance = precessedBook;
@@ -57,14 +61,13 @@ function onMessage(ev: MessageEvent): void {
 }
 
 ctx.addEventListener('message', ({ data = {} }: MessageEvent) => {
-  const { type, uri, product } = data;
-  console.log(type, product)
+  const { type, uri, product }: WorkerIncomeMessage = data;
   switch (type) {
     case START:
       bookInstance = EMPTY_BOOK;
       connection = new Socket(uri, {
-        event: "subscribe",
-        feed: "book_ui_1",
+        event: SUBSCRIBE_EVENT,
+        feed: BOOK_ID,
         product_ids: [product]
       })
       connection.addEventListener('message', onMessage);
@@ -73,8 +76,8 @@ ctx.addEventListener('message', ({ data = {} }: MessageEvent) => {
       bookInstance = EMPTY_BOOK;
       connection.close();
       connection = new Socket(uri, {
-        event: "subscribe",
-        feed: "book_ui_1",
+        event: SUBSCRIBE_EVENT,
+        feed: BOOK_ID,
         product_ids: [product]
       })
       connection.addEventListener('message', onMessage);

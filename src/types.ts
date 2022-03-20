@@ -17,6 +17,11 @@ export interface BooksList {
   isAsks: boolean;
 }
 
+export type Message = {
+  show: boolean;
+  info?: string;
+}
+
 export type MessageStruct = {
   type: string,
   uri: string,
@@ -32,7 +37,9 @@ export type WsMessage = {
 
 export type WsResponse = {
   event: string;
-  feed: string;
+  version?: number;
+  feed?: string;
+  product_ids: Array<string>;
   product_id: string;
   asks: number[][];
   bids: number[][];
@@ -45,3 +52,8 @@ export type WsResponseInfo = {
   version: number;
 }
 
+export type WorkerIncomeMessage = {
+  type: string;
+  uri: string,
+  product: string;
+}

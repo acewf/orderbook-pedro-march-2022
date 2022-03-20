@@ -1,4 +1,4 @@
-import { BookItem } from '../types';
+import type { BookItem } from '../types';
 
 function sortAndAddTotals(entries: Array<BookItem>, asc: boolean): Array<BookItem> {
   const sortEntries = entries.sort((a, b) => {
