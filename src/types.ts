@@ -1,3 +1,5 @@
+import { MouseEventHandler } from 'react';
+
 export type BookItem = {
   price: number;
   size: number;
@@ -11,6 +13,10 @@ export interface OrderBook {
   levels: number;
 }
 
+export interface IBook extends OrderBook {
+  onClick: MouseEventHandler;
+}
+
 export interface BooksList {
   entries: Array<BookItem>;
   maxTotal: number;
@@ -20,6 +26,10 @@ export interface BooksList {
 export type Message = {
   show: boolean;
   info?: string;
+}
+
+export interface IMessage extends Message {
+  onClick: MouseEventHandler;
 }
 
 export type MessageStruct = {

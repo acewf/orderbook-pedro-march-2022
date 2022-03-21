@@ -1,11 +1,16 @@
 import { FC } from 'react';
-import type { Message } from '../../types';
+import type { IMessage } from '../../types';
 
-const Warning: FC<Message> = ({ info, show }) => {
+const Warning: FC<IMessage> = ({ info, show, onClick }) => {
   if (!show) return null;
 
   return (
-    <div className="absolute inset-0 flex justify-center items-center bg-black/50">{info}</div>
+    <div role="warning" className="absolute inset-0 flex flex-col justify-center items-center bg-black/50">
+      <p>{info}</p>
+      <button className='rounded bg-purple-800 text-white p-2 m-2' onClick={onClick}>
+        Return to order book
+      </button>
+    </div>
   );
 }
 

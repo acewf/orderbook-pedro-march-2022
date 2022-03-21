@@ -12,7 +12,7 @@ const ColumnsTitles: FC<Props> = ({ productId, spread }) => {
       <span className="hidden md:block">
         {spread}
       </span>
-      <span className="md:invisible">{productId}</span>
+      <span role="selected-product" className="md:invisible">{productId}</span>
     </div>
   );
 }

@@ -1,7 +1,7 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC } from 'react';
 import { useMediaQuery } from 'usehooks-ts'
 
-import type { OrderBook, BookItem } from '../../types';
+import type { IBook } from '../../types';
 import TitleBar from './TitleBar';
 import ButtonBar from './ButtonBar';
 import ColumnsTitles from './ColumnsTitles';
@@ -9,11 +9,8 @@ import MobileSpreadBar from './MobileSpreadBar';
 import PriceList from '../PriceList';
 import { getBookInfo } from './dataHelper';
 
-interface BookProps extends OrderBook {
-  onClick: MouseEventHandler;
-}
 
-const Book: FC<BookProps> = ({ asks, bids, product_id, onClick }) => {
+const Book: FC<IBook> = ({ asks, bids, product_id, onClick }) => {
   const matches: boolean = useMediaQuery('(min-width: 768px)')
 
   const { spread, maxTotal, shortAsks, shortBids } = getBookInfo({ matches, asks, bids });
@@ -28,7 +25,7 @@ const Book: FC<BookProps> = ({ asks, bids, product_id, onClick }) => {
             <PriceList maxTotal={maxTotal} entries={shortAsks} isAsks={true} />
           </div>
           <MobileSpreadBar spread={spread} />
-          <div className="h-auto md:h-full w-full overflow-hidden">
+          <div className="h-auto md:h-fullnp w-full overflow-hidden">
             <div className="hidden md:flex">
               <ColumnsTitles />
             </div>

@@ -20,14 +20,17 @@ const useAppFocus = ({ current, bookData }: Props) => {
     }
 
     const resumeRender = () => {
-      if (bookData.product_id === BTC_MESSAGE.product) {
-        current?.postMessage({
-          ...BTC_MESSAGE,
-          type: SWAP,
-        });
-      } else {
-        current?.postMessage(ETH_MESSAGE);
-      }
+      // if wanted automated focus could do
+      /*
+        if (bookData.product_id === BTC_MESSAGE.product) {
+          current?.postMessage({
+            ...BTC_MESSAGE,
+            type: SWAP,
+          });
+        } else {
+          current?.postMessage(ETH_MESSAGE);
+        }
+      */
     }
 
     window.addEventListener('blur', pauseRender);

@@ -28,6 +28,17 @@ const Home: NextPage = () => {
     }
   }
 
+  const resumeRender = () => {
+    if (bookData.product_id === BTC_MESSAGE.product) {
+      ref?.postMessage({
+        ...BTC_MESSAGE,
+        type: SWAP,
+      });
+    } else {
+      ref?.postMessage(ETH_MESSAGE);
+    }
+  }
+
   return (
     <div className="text-white w-full h-full min-h-screen flex justify-center items-center">
       <Head>
@@ -41,7 +52,7 @@ const Home: NextPage = () => {
           <span>Product: {bookData.product_id}</span>
         </div>
         <Book {...bookData} onClick={toggleProduct} />
-        <Warning {...message} />
+        <Warning {...message} onClick={resumeRender} />
       </main>
     </div>
   )

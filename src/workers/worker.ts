@@ -87,3 +87,5 @@ ctx.addEventListener('message', ({ data = {} }: MessageEvent) => {
       return;
   }
 });
+
+export default ctx;
